@@ -22,13 +22,13 @@ export default function TabLayout() {
       tabBarLabel: "Home",
       tabBarIcon: ({color, size})=><Ionicons name="home" color={color} size={size}/>,
     }} />
-    <Tabs.Screen name="receipe" options={{
-        title: "Receipe Page",
-        tabBarLabel: "Receipe",
+    <Tabs.Screen name="recipe" options={{
+        title: "Recipe Page",
+        tabBarLabel: "Recipe",
         tabBarIcon: ({color, size})=><Ionicons name="fast-food" color={color} size={size}/>,
     }} />
     <Tabs.Screen name="cooking" options={{
-        title: "Cooking Receipe",
+        title: "Cooking Recipe",
         tabBarLabel: "Cooking",
         tabBarIcon: ({color, size})=><Ionicons name="restaurant" color={color} size={size}/>,
     }} />
