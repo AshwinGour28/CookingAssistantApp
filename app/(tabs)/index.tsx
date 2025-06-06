@@ -1,43 +1,74 @@
-import { Text, View, StyleSheet, Button } from "react-native";
+import { Text, View, StyleSheet, Button, ActivityIndicator, FlatList } from "react-native";
 // import { Link } from "expo-router";
 import { useDispatch, useSelector } from "react-redux";
 import { selectRecipe, nextStep } from "../store/recipeSlice";
 import { RootState } from "../store";
 import RecipeCard from "../components/RecipeCard";
+import { useEffect, useState } from "react";
+import axios from 'axios';
+import { useNavigation } from "@react-navigation/native";
+
+interface Recipe {
+    name: string,
+    category: string,
+    image: string,
+    id: string
+
+    tags?: string[];
+    ingredients?: string[];
+    instructions?: string[];
+}
 
 export default function Index() {
   const dispatch = useDispatch();
-  const selectedRecipe = useSelector(
-    (state: RootState) => state.recipe.selectedRecipeId
-  )
+  
   const step = useSelector((state: RootState)=>state.recipe.currentStepIndex)
-  return (
-    // <View style={styles.container}>
-    //   <Text style={styles.text}>
-    //     Selected Recipe: {selectedRecipe ?? 'None'}
-    //   </Text>
-    //   <Text style={styles.text}>
-    //     Current Step {step ?? 'None'}
-    //   </Text>
-    //   <Button title="Select Recipe" onPress={()=>{
-    //     dispatch(selectRecipe('maggie'))
-    //     console.log('Dispatching recipe')
-    //     }}/>
-    //   <Button title="Next Step" onPress={()=>{
-    //     dispatch(nextStep())
-    //     console.log('updating step')
-    //     console.log(step);
-    //     }}/>
+  const navigation = useNavigation()
+  const [recipes, setRecipes] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    //   {/* <Link href="/receipe" style={styles.text}>Go to About Page</Link> */}
-    // </View>
-    <RecipeCard 
-      recipe={{
-        image: "https://www.themealdb.com/images/media/meals/020z181619788503.jpg",
-        title: 'Avocado wiht Nuts',
-        category: "Breakfast"
-      }}
-      onPress={()=>console.log("Recipe Pressed")}
+  useEffect(()=>{
+    const fetchRecipes = async () =>{
+      try{
+        const response = await axios.get("http://192.168.2.141:3000/api/recipes");
+        setRecipes(response.data)
+      }catch(error){
+        console.log(error)
+      }
+      finally{
+        setLoading(false);
+      }
+    }
+
+    fetchRecipes();
+  }, []);
+
+  const handleOnPress = (id : string) =>{
+    dispatch(selectRecipe(`${id}`));
+    navigation.navigate('recipe');
+  }
+
+  if(loading) {
+    return (
+      <View>
+        <ActivityIndicator size='large' color='#fff' style={{flex: 1}}/>
+      </View>
+    )
+  }
+  return (
+    <FlatList<Recipe>
+      data={recipes}
+      keyExtractor={(item) => item.id}
+      renderItem={({ item }) => (
+        <RecipeCard
+          recipe={{
+            image: item.image,
+            title: item.name,
+            category: item.category,
+          }}
+          onPress={() => handleOnPress(item.id)}
+        />
+      )}
     />
   );
 }
