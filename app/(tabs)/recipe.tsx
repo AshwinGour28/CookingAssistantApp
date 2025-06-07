@@ -1,9 +1,9 @@
-import {Text, View, StyleSheet, Image} from 'react-native';
+import {Text, View, StyleSheet, Image, ScrollView} from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 
 export default function Recipe(){
-    const selectedRecipe = useSelector((state: RootState) => state.recipe.selectedRecipeId)
+    const selectedRecipe = useSelector((state: RootState) => state.recipe.selectedRecipe)
     
     if(!selectedRecipe){
         return (
@@ -13,14 +13,19 @@ export default function Recipe(){
         )
     }
     return (
-        <View style={styles.container}>
-            {/* <Image source={{ uri: selectedRecipe.image}} />
-            <Text style={styles.text}>{selectedRecipe.name}</Text>
-            <Text style={styles.text}>{selectedRecipe.category}</Text>
-            <Text style={styles.text}>{selectedRecipe.ingredients}</Text> */
-            <Text>{selectedRecipe}</Text>
-            }
-        </View>
+        <ScrollView>
+            <Image source={{uri: selectedRecipe.image}} style={styles.image} resizeMode='cover'/>
+            <Text style={styles.head}>{selectedRecipe.name}</Text>
+            <Text style={styles.category}>{selectedRecipe.category}</Text>
+            <Text style={styles.section}>Ingredients</Text>
+            {selectedRecipe.ingredients.map((ing, i)=>(
+                <Text key={i} style={styles.text}>{i+1}. {ing}</Text>
+            ))}
+            <Text style={styles.section}>Steps</Text>
+            {selectedRecipe.instructions.map((step, i)=>(
+                <Text key={i} style={styles.text}>{i+1}. {step}</Text>
+            ))}
+        </ScrollView>
     );
 }
 
@@ -32,6 +37,34 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     text: {
-        color: '#fff'
+        marginHorizontal: 10,
+        marginBottom: 4
+    },
+    image: {
+        width: '100%',
+        height: 250,
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20
+    },
+    head: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        margin: 10,
+    },
+    category: {
+        fontSize: 20,
+        marginHorizontal: 10,
+        color: '#666',
+        marginBottom: 20
+        
+    },
+    section: {
+        fontSize: 20,
+        marginHorizontal: 10,
+        marginTop: 16,
+        marginBottom: 8,
+    
+
     }
-})
+}
+)

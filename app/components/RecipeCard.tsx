@@ -3,8 +3,11 @@ import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
 
 type Recipe = {
     image: string,
-    title: string,
-    category: string
+    name: string,
+    category: string,
+    id: string,
+    ingredients: string[];
+    instructions: string[];
 }
 const RecipeCard = ({recipe, onPress}: {recipe: Recipe; onPress:() => void})=>{
     return(
@@ -16,7 +19,7 @@ const RecipeCard = ({recipe, onPress}: {recipe: Recipe; onPress:() => void})=>{
             />
             <View style={styles.content}>
                 <Text style={styles.title}>
-                    {recipe.title}
+                    {recipe.name}
                 </Text>
                 <Text style={styles.text}>
                     {recipe.category}

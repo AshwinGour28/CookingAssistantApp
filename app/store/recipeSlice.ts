@@ -1,12 +1,20 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
+interface Recipe {
+    image: string,
+    name: string,
+    category: string,
+    id: string,
+    ingredients: string[];
+    instructions: string[];
+}
 interface RecipeState {
-    selectedRecipeId: string | null;
+    selectedRecipe: Recipe | null;
     currentStepIndex: number;
 }
 
 const initialState: RecipeState = {
-    selectedRecipeId: null,
+    selectedRecipe: null,
     currentStepIndex: 0,
 }
 
@@ -14,8 +22,8 @@ const recipeSlice = createSlice({
     name: 'recipe',
     initialState,
     reducers: {
-        selectRecipe: (state, action: PayloadAction<string>) => {
-            state.selectedRecipeId = action.payload;
+        selectRecipe: (state, action: PayloadAction<Recipe>) => {
+            state.selectedRecipe = action.payload;
             state.currentStepIndex = 0;
         },
         nextStep: (state) => {

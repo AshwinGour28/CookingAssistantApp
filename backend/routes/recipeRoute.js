@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
-    const response = await axios.get('https://www.themealdb.com/api/json/v1/1/search.php?f=a');
+    const response = await axios.get('https://www.themealdb.com/api/json/v1/1/search.php?s=chicken');
     const rawMeals = response.data.meals;
     const cleanedMeals = rawMeals.map(meal=>{
         const ingredients = [];

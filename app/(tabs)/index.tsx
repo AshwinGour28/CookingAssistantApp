@@ -9,14 +9,12 @@ import axios from 'axios';
 import { useNavigation } from "@react-navigation/native";
 
 interface Recipe {
+    image: string,
     name: string,
     category: string,
-    image: string,
-    id: string
-
-    tags?: string[];
-    ingredients?: string[];
-    instructions?: string[];
+    id: string,
+    ingredients: string[];
+    instructions: string[];
 }
 
 export default function Index() {
@@ -43,9 +41,16 @@ export default function Index() {
     fetchRecipes();
   }, []);
 
-  const handleOnPress = (id : string) =>{
-    dispatch(selectRecipe(`${id}`));
-    navigation.navigate('recipe');
+  const handleOnPress = (recipe : Recipe) =>{
+    dispatch(selectRecipe({
+            image: recipe.image,
+            name: recipe.name,
+            category: recipe.category,
+            id: recipe.id,
+            ingredients: recipe.ingredients,
+            instructions: recipe.instructions
+    }));
+    navigation.navigate("recipe");
   }
 
   if(loading) {
@@ -63,10 +68,13 @@ export default function Index() {
         <RecipeCard
           recipe={{
             image: item.image,
-            title: item.name,
+            name: item.name,
             category: item.category,
+            id: item.id,
+            ingredients: item.ingredients,
+            instructions: item.instructions
           }}
-          onPress={() => handleOnPress(item.id)}
+          onPress={() => handleOnPress(item)}
         />
       )}
     />
