@@ -1,10 +1,12 @@
-import {Text, View, StyleSheet, Image, ScrollView} from 'react-native';
+import {Text, View, StyleSheet, Image, ScrollView, Button, TouchableOpacity} from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
+import { useRouter } from 'expo-router';
 
 export default function Recipe(){
     const selectedRecipe = useSelector((state: RootState) => state.recipe.selectedRecipe)
-    
+    const router = useRouter();
+
     if(!selectedRecipe){
         return (
             <View style={styles.container}>
@@ -25,6 +27,9 @@ export default function Recipe(){
             {selectedRecipe.instructions.map((step, i)=>(
                 <Text key={i} style={styles.text}>{i+1}. {step}</Text>
             ))}
+            <TouchableOpacity style={styles.start} onPress={()=>router.push('/cooking')}>
+                <Text style={styles.startButton}>Start Now</Text>
+            </TouchableOpacity>
         </ScrollView>
     );
 }
@@ -63,8 +68,19 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         marginTop: 16,
         marginBottom: 8,
-    
+    },
+    start: {
+        width: '100%',
+        alignItems: 'center'
 
+    },
+    startButton: {
+        backgroundColor: '#65a7f7',
+        padding: 10,
+        paddingHorizontal: 30,
+        marginVertical: 10,
+        borderRadius: 10,
+        color: '#fff'
     }
 }
 )

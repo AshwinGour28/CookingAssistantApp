@@ -6,7 +6,7 @@ import { RootState } from "../store";
 import RecipeCard from "../components/RecipeCard";
 import { useEffect, useState } from "react";
 import axios from 'axios';
-import { useNavigation } from "@react-navigation/native";
+import { useRouter } from "expo-router";
 
 interface Recipe {
     image: string,
@@ -21,7 +21,7 @@ export default function Index() {
   const dispatch = useDispatch();
   
   const step = useSelector((state: RootState)=>state.recipe.currentStepIndex)
-  const navigation = useNavigation()
+  const router = useRouter()
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -50,12 +50,12 @@ export default function Index() {
             ingredients: recipe.ingredients,
             instructions: recipe.instructions
     }));
-    navigation.navigate("recipe");
+    router.push("/recipe");
   }
 
   if(loading) {
     return (
-      <View>
+      <View style={{flex: 1}}>
         <ActivityIndicator size='large' color='#fff' style={{flex: 1}}/>
       </View>
     )
