@@ -1,8 +1,8 @@
 import { Text, View, StyleSheet, Button, ActivityIndicator, FlatList } from "react-native";
 // import { Link } from "expo-router";
 import { useDispatch, useSelector } from "react-redux";
-import { selectRecipe, nextStep } from "../store/recipeSlice";
-import { RootState } from "../store";
+import { selectRecipe, nextStep } from "../../store/recipeSlice"
+import { RootState } from "../../store"
 import RecipeCard from "../components/RecipeCard";
 import { useEffect, useState } from "react";
 import axios from 'axios';
@@ -28,7 +28,7 @@ export default function Index() {
   useEffect(()=>{
     const fetchRecipes = async () =>{
       try{
-        const response = await axios.get("http://192.168.2.141:3000/api/recipes");
+        const response = await axios.get("http://192.168.1.6:3000/api/recipes");
         setRecipes(response.data)
       }catch(error){
         console.log(error)

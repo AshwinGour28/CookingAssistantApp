@@ -31,10 +31,13 @@ const recipeSlice = createSlice({
         },
         resetSteps: (state) => {
             state.currentStepIndex = 0;
-        }
+        },
+        prevStep: (state) => {
+            state.currentStepIndex-=1;
+        },
     }
 });
 
-export const {selectRecipe, nextStep, resetSteps} = recipeSlice.actions;
+export const {selectRecipe, nextStep, resetSteps, prevStep} = recipeSlice.actions;
 
 export default recipeSlice.reducer;
